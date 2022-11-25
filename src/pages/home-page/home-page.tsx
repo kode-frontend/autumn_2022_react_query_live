@@ -16,9 +16,15 @@ type Prop = {
   data: TPost[];
   isLoading: boolean;
   onEditCard: (id: string) => void;
+  onDeleteCard: (id: string) => void;
 };
 
-export const HomePage = ({ data, isLoading, onEditCard }: Prop) => {
+export const HomePage = ({
+  data,
+  isLoading,
+  onEditCard,
+  onDeleteCard,
+}: Prop) => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -29,7 +35,7 @@ export const HomePage = ({ data, isLoading, onEditCard }: Prop) => {
       <PostCardList
         data={data}
         onEditCard={onEditCard}
-        onDeleteCard={() => null}
+        onDeleteCard={onDeleteCard}
       />
     </Wrapper>
   );

@@ -1,11 +1,16 @@
 import { HomePage } from './home-page';
 
-import { useGetAllPosts, useUpdatePost } from '../../entities/posts';
+import {
+  useDeletePost,
+  useGetAllPosts,
+  useUpdatePost,
+} from '../../entities/posts';
 import { TPost } from '../../entities/posts/types';
 
 export const HomePageConnector = () => {
   const { data, isLoading, refetch } = useGetAllPosts();
   const { mutateAsync: editMutation } = useUpdatePost();
+  const { mutateAsync: deleteMutation } = useDeletePost();
 
   const mappedData: TPost[] =
     data?.map(item => ({
@@ -21,7 +26,18 @@ export const HomePageConnector = () => {
     });
   };
 
+  const onDeleteCard = (id: string) => {
+    deleteMutation(id).finally(() => {
+      refetch();
+    });
+  };
+
   return (
-    <HomePage data={mappedData} isLoading={isLoading} onEditCard={onEditCard} />
+    <HomePage
+      data={mappedData}
+      isLoading={isLoading}
+      onEditCard={onEditCard}
+      onDeleteCard={onDeleteCard}
+    />
   );
 };
