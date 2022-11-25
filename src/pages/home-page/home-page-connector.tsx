@@ -1,10 +1,11 @@
 import { HomePage } from './home-page';
 
-import { useGetAllPosts } from '../../entities/posts';
+import { useGetAllPosts, useUpdatePost } from '../../entities/posts';
 import { TPost } from '../../entities/posts/types';
 
 export const HomePageConnector = () => {
-  const { data, isLoading } = useGetAllPosts();
+  const { data, isLoading, refetch } = useGetAllPosts();
+  const { mutateAsync: editMutation } = useUpdatePost();
 
   const mappedData: TPost[] =
     data?.map(item => ({
@@ -14,5 +15,13 @@ export const HomePageConnector = () => {
       text: item.body,
     })) ?? [];
 
-  return <HomePage data={mappedData} isLoading={isLoading} />;
+  const onEditCard = (id: string) => {
+    editMutation(id).finally(() => {
+      refetch();
+    });
+  };
+
+  return (
+    <HomePage data={mappedData} isLoading={isLoading} onEditCard={onEditCard} />
+  );
 };

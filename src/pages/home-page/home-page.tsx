@@ -15,9 +15,10 @@ const Wrapper = styled.div`
 type Prop = {
   data: TPost[];
   isLoading: boolean;
+  onEditCard: (id: string) => void;
 };
 
-export const HomePage = ({ data, isLoading }: Prop) => {
+export const HomePage = ({ data, isLoading, onEditCard }: Prop) => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -25,7 +26,11 @@ export const HomePage = ({ data, isLoading }: Prop) => {
   return (
     <Wrapper>
       <h1>React Query Example</h1>
-      <PostCardList data={data} />
+      <PostCardList
+        data={data}
+        onEditCard={onEditCard}
+        onDeleteCard={() => null}
+      />
     </Wrapper>
   );
 };
