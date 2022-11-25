@@ -1,4 +1,7 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
+
+import { QUERY_KEY } from './use-get-all-posts';
+import { TPostModel } from './types';
 
 const fetcher = async (id: string) => {
   const ID = Number(id);
@@ -22,5 +25,31 @@ const fetcher = async (id: string) => {
 };
 
 export const useUpdatePost = () => {
-  return useMutation((id: string) => fetcher(id));
+  const queryClient = useQueryClient();
+
+  return useMutation((id: string) => fetcher(id), {
+    onMutate: id => {
+      const currentData = queryClient.getQueryData<TPostModel[]>(QUERY_KEY);
+
+      if (currentData) {
+        const newData: TPostModel[] = [];
+
+        currentData.map(item => {
+          if (String(item.id) === id) {
+            newData.push({
+              ...item,
+              title: 'Новый пост',
+              body: 'Рандомный текст нового поста',
+            });
+          }
+          newData.push(item);
+        });
+
+        queryClient.setQueryData(QUERY_KEY, () => newData);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERY_KEY);
+    },
+  });
 };

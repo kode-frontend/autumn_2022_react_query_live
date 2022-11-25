@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 type Prop = {
   data: TPost[];
   isLoading: boolean;
+  isRefetching: boolean;
   onEditCard: (id: string) => void;
   onDeleteCard: (id: string) => void;
 };
@@ -22,6 +23,7 @@ type Prop = {
 export const HomePage = ({
   data,
   isLoading,
+  isRefetching,
   onEditCard,
   onDeleteCard,
 }: Prop) => {
@@ -36,6 +38,7 @@ export const HomePage = ({
         data={data}
         onEditCard={onEditCard}
         onDeleteCard={onDeleteCard}
+        isLoading={isRefetching}
       />
     </Wrapper>
   );

@@ -8,12 +8,17 @@ import {
 import { TPost } from '../../entities/posts/types';
 
 export const HomePageConnector = () => {
-  const { data, isLoading, refetch } = useGetAllPosts();
+  const {
+    data: postsData,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useGetAllPosts();
   const { mutateAsync: editMutation } = useUpdatePost();
   const { mutateAsync: deleteMutation } = useDeletePost();
 
   const mappedData: TPost[] =
-    data?.map(item => ({
+    postsData?.map(item => ({
       userId: String(item.useId),
       postId: String(item.id),
       title: item.title,
@@ -21,9 +26,7 @@ export const HomePageConnector = () => {
     })) ?? [];
 
   const onEditCard = (id: string) => {
-    editMutation(id).finally(() => {
-      refetch();
-    });
+    editMutation(id);
   };
 
   const onDeleteCard = (id: string) => {
@@ -36,6 +39,7 @@ export const HomePageConnector = () => {
     <HomePage
       data={mappedData}
       isLoading={isLoading}
+      isRefetching={isRefetching}
       onEditCard={onEditCard}
       onDeleteCard={onDeleteCard}
     />
