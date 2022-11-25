@@ -1,3 +1,13 @@
-# Getting Started with Create React App
+# React Query
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### План лайвкодинга
+
+1. Установить React Query
+2. Вызвать все посты
+3. Реализовать редактирование поста
+4. Реализовать удаление поста
+5. - Использовать в мутации данные из кэша другого запроса
+
+### Ссылки
+
+[Документация React Query](https://react-query-v3.tanstack.com/overview)
